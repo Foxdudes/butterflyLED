@@ -8,7 +8,7 @@ from neopixel import *
 NUM_BALLS		= 128				# Number of balls on your board #CHANGED FOR XL
 NUM_ROWS		= 7					# How many rows of balls are on your board
 NUM_COLS		= 20				# How many effective columns are on your board. This is equal to your widest row.
-PIXEL_DENSITY	= 60				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
+PIXEL_DENSITY	= 30				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
 
 PIXEL_RATIO		= PIXEL_DENSITY/30	# Needed for the odd strips like mine
 LED_PIN        	= 18      			# GPIO pin connected to the pixels (18 uses PWM!).
@@ -16,7 +16,7 @@ LED_FREQ_HZ    	= 800000  			# LED signal frequency in hertz (usually 800khz)
 LED_DMA        	= 10       			# DMA channel to use for generating signal (try 5)
 LED_INVERT     	= False   			# True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    	= 0       			# set to '1' for GPIOs 13, 19, 41, 45 or 53
-LED_STRIP      	= ws.WS2811_STRIP_GRB   # Strip type and colour ordering
+LED_STRIP      	= ws.WS2811_STRIP_RGB   # Strip type and colour ordering
 
 # Define the rows the grid by defining the ball numbers.
 
