@@ -1,1 +1,1 @@
-{"openweather": "INSERT KEY HERE"}
+{"openweather": "053385c199200c4801aa4ea47957a0fc"}
