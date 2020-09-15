@@ -171,13 +171,13 @@ def setTimeFormat():
 def updateWebPageSettings():
 	if request.method == 'GET':
 		# Get the web page settings from webpagesettings.txt
-		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
+		with open('/home/pi/ledppbc/code/webpagesettings.txt', 'r') as filehandle:
 			return filehandle.read()
 	
 	elif request.method == 'POST':
 		settings = str(request.form['settings'])
 		# Write the settings to webpagesettings.txt
-		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'w') as filehandle:
+		with open('/home/pi/ledppbc/code/webpagesettings.txt', 'w') as filehandle:
 			filehandle.write(settings)
 		return ""
 
