@@ -535,17 +535,18 @@ class PingPongBoard:
 		}
 
 		# Dump the settings to settings.txt
-		with open('/home/pi/pingPongBallClock/code/settings.txt', 'w') as filehandle:
+		with open('/home/pi/
+			  /code/settings.txt', 'w') as filehandle:
 			json.dump(settings, filehandle)
 
 	# This will load the settings from settings.txt
 	def loadSettings(self,bootup=True):
 		# Get the settings dictionary from settings.txt
-		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
+		with open('/home/pi/ledppbc/code/settings.txt', 'r') as filehandle:
 			settings = json.load(filehandle)
 
 		# Get the API keys from apikeys.txt
-		with open('/home/pi/pingPongBallClock/code/apikeys.txt', 'r') as filehandle:
+		with open('/home/pi/ledppbc/code/apikeys.txt', 'r') as filehandle:
 			apikeys = json.load(filehandle)
 		
 		# Set the API Key variables
