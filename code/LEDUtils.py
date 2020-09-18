@@ -535,8 +535,7 @@ class PingPongBoard:
 		}
 
 		# Dump the settings to settings.txt
-		with open('/home/pi/
-			  /code/settings.txt', 'w') as filehandle:
+		with open('/home/pi/ledppbc/code/settings.txt', 'w') as filehandle:
 			json.dump(settings, filehandle)
 
 	# This will load the settings from settings.txt
