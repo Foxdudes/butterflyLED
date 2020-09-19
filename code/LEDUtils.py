@@ -250,7 +250,7 @@ class PingPongBoard:
 			return Color(0, pos * 3, 255 - pos * 3)     #blue to green
 	
 	# Rainbow color animation
-	def rainbow(self,wait_ms=20):
+	def rainbow(self,wait_ms=18):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
@@ -262,7 +262,7 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 		
-	def rainbowText(self,wait_ms=20):
+	def rainbowText(self,wait_ms=18):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
@@ -275,7 +275,7 @@ class PingPongBoard:
 		time.sleep(wait_ms/1000.0)
 		
 	# test color animation
-	def test(self,wait_ms=5):
+	def test(self,wait_ms=1):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
@@ -295,7 +295,9 @@ class PingPongBoard:
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,Color(x*3+y+169,x*3-y*2+60,13-x+8*y))
+					self.writeBallColor(x,y,Color(169,34,69))
+				if x == 2:
+					self.writeBallColor(x,y,Color(200,0,0))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
