@@ -174,6 +174,8 @@ class PingPongBoard:
 				self.rainbow()
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
+			elif self.bgColor[1] == "test":
+				self.test()
 			elif self.bgColor[1] == "breathing":
 				self.breathing(False)
 			elif self.bgColor[1] == "twinkle":
