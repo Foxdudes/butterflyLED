@@ -176,6 +176,18 @@ function setBGBlack(){
 	settings('save');
 }
 
+function setBGWhite(){
+	var xhttp = new XMLHttpRequest();
+	var red = 255;
+	var green = 255;
+	var blue = 255;
+	xhttp.open("POST", "/api/bgcolor", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
+}
+
 function setTextWhite(){
 	var xhttp = new XMLHttpRequest();
 	var red = 255;
