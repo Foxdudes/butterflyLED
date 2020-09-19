@@ -288,7 +288,7 @@ class PingPongBoard:
 		time.sleep(wait_ms/1000.0)
 		
 	# ani1 color animation
-	def ani1(self,wait_ms=200):
+	def ani1(self,wait_ms=20000):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
@@ -296,24 +296,24 @@ class PingPongBoard:
 			for y in range(self.num_rows):
 				if self.balls[y][x].text == False:
 					self.writeBallColor(x,y,Color(169,34,69))
-					self.writeBallColor(2,1,Color(255,0,85))
-					self.writeBallColor(3,1,Color(255,0,85))
-					self.writeBallColor(3,0,Color(255,0,85))
-					self.writeBallColor(4,6,Color(255,0,85))
-					self.writeBallColor(5,6,Color(255,0,85))
-					self.writeBallColor(5,5,Color(255,0,85))
-					self.writeBallColor(10,1,Color(255,0,85))
-					self.writeBallColor(11,1,Color(255,0,85))
-					self.writeBallColor(11,0,Color(255,0,85))
-					self.writeBallColor(11,5,Color(255,0,85))
-					self.writeBallColor(12,5,Color(255,0,85))
-					self.writeBallColor(12,4,Color(255,0,85))
-					self.writeBallColor(16,1,Color(255,0,85))
-					self.writeBallColor(17,1,Color(255,0,85))
-					self.writeBallColor(17,0,Color(255,0,85))
-					self.writeBallColor(19,3,Color(255,0,85))
-					self.writeBallColor(20,3,Color(255,0,85))
-					self.writeBallColor(20,2,Color(255,0,85))
+					self.writeBallColor(2,1,Color(255,0,0))
+					self.writeBallColor(3,1,Color(255,0,0))
+					self.writeBallColor(3,0,Color(255,0,0))
+					self.writeBallColor(4,6,Color(255,0,0))
+					self.writeBallColor(5,6,Color(255,0,0))
+					self.writeBallColor(5,5,Color(255,0,0))
+					self.writeBallColor(10,1,Color(255,0,0))
+					self.writeBallColor(11,1,Color(255,0,0))
+					self.writeBallColor(11,0,Color(255,0,0))
+					self.writeBallColor(12,6,Color(255,0,0))
+					self.writeBallColor(13,6,Color(255,0,0))
+					self.writeBallColor(13,5,Color(255,0,0))
+					self.writeBallColor(16,1,Color(255,0,0))
+					self.writeBallColor(17,1,Color(255,0,0))
+					self.writeBallColor(17,0,Color(255,0,0))
+					self.writeBallColor(18,3,Color(255,0,0))
+					self.writeBallColor(19,3,Color(255,0,0))
+					self.writeBallColor(19,2,Color(255,0,0))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
