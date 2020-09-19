@@ -176,6 +176,8 @@ class PingPongBoard:
 				self.rainbowCycle()
 			elif self.bgColor[1] == "test":
 				self.test()
+				elif self.bgColor[1] == "ani1":
+				self.ani1()
 			elif self.bgColor[1] == "breathing":
 				self.breathing(False)
 			elif self.bgColor[1] == "twinkle":
@@ -246,7 +248,17 @@ class PingPongBoard:
 		else:
 			pos -= 170
 			return Color(0, pos * 3, 255 - pos * 3)     #blue to green
-
+	def wheel2(self,pos):
+		# Generate rainbow colors across 0-255 positions.
+		if pos < 85:
+			return Color(pos * 5, 255 - pos * 5, 0)     #green to red
+		elif pos < 170:
+			pos -= 85
+			return Color(255 - pos * 5, 0, pos * 5)     #red to blue
+		else:
+			pos -= 170
+			return Color(0, pos * 5, 255 - pos * 5)     #blue to green
+	
 	# Rainbow color animation
 	def rainbow(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
@@ -269,20 +281,19 @@ class PingPongBoard:
 			for y in range(self.num_rows):
 				i = x*self.num_rows + y
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+					self.writeBallColor(x,y,self.wheel2(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
-
-	# Rainbow text color animation
-	def test(self,wait_ms=20):
+		
+	# ani1 color animation
+	def ani1(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
-				i = x*self.num_rows + y
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+					self.writeBallColor(x,y,Color(random.randint(0, 255),random.randint(0, 255),random.randint(0, 255)))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
