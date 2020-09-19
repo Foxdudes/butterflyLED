@@ -282,7 +282,7 @@ class PingPongBoard:
 			for y in range(self.num_rows):
 				i = x*self.num_rows + y
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,color(x,y,j/2))
+					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
