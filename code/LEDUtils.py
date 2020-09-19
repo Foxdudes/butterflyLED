@@ -194,6 +194,8 @@ class PingPongBoard:
 				self.rainbowText()
 			elif self.textColor[1] == "rainbowCycle":
 				self.rainbowCycleText()
+			elif self.textColor[1] == "testText":
+				self.testText()
 			elif self.textColor[1] == "breathing":
 				self.breathing(True)
 		# Else, check for solid notification
@@ -287,8 +289,21 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 		
+	# testtext color animation
+	def testText(self,wait_ms=1):
+		# Draw rainbow that fades across all pixels at once.
+		j = self.updateFrame((self.led_count+self.led_count))
+
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
+				i = x*self.num_rows + y
+				if self.balls[y][x].text == True:
+					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+		
 	# ani1 color animation
-	def ani1(self,wait_ms=20000):
+	def ani1(self,wait_ms=200):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
