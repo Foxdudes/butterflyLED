@@ -172,6 +172,8 @@ class PingPongBoard:
 		if self.bgColor[0] == "animation":
 			if self.bgColor[1] == "rainbow":
 				self.rainbow()
+			elif self.bgColor[1] == "rainbow2":
+				self.rainbow2()
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
 			elif self.bgColor[1] == "test":
@@ -331,7 +333,20 @@ class PingPongBoard:
 					self.writeBallColor(19,2,Color(255,0,0))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
+	
+	# rainbow2 color animation
+	def rainbow2(self,wait_ms=10):
+		# Draw rainbow that fades across all pixels at once.
+		j = self.updateFrame((self.led_count+self.led_count))
 
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
+				i = y*self.num_cols + x
+				if self.balls[y][x].text == False:
+					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+		
 	# Rainbow cycle makes all of the BG balls the same color and changes the color over time
 	def rainbowCycle(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
