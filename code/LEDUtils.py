@@ -145,7 +145,7 @@ class PingPongBoard:
 				self.writeBallTextState(x,y,False)
 
 	# Fills sections/the whole board with the provided color. This function can fill: the whole board, only non-text balls, only text balls
-	def colorFill(self,color,fullwipe=False,textOnly=False):
+	def (self,color,fullwipe=False,textOnly=False):
 		# Fill the full screen
 		if fullwipe:
 			for y in range(self.num_rows):
@@ -169,7 +169,10 @@ class PingPongBoard:
 	# The core function that updates both the background color and text colors
 	def updateBoardColors(self):
 		# Write the BG. Will not overwrite text per the function
-		if self.bgColor[0] == "animation":
+		if self.
+		
+		
+		[0] == "animation":
 			if self.bgColor[1] == "rainbow":
 				self.rainbow()
 			elif self.bgColor[1] == "rainbow2":
@@ -180,6 +183,8 @@ class PingPongBoard:
 				self.test()
 			elif self.bgColor[1] == "ani1":
 				self.ani1()
+			elif self.bgColor[1] == "test2":
+				self.test2()
 			elif self.bgColor[1] == "breathing":
 				self.breathing(False)
 			elif self.bgColor[1] == "twinkle":
@@ -342,6 +347,20 @@ class PingPongBoard:
 	
 	# rainbow2 color animation
 	def rainbow2(self,wait_ms=10):
+		# Draw rainbow that fades across all pixels at once.
+		j = self.updateFrame((self.led_count+self.led_count))
+
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
+				i = y*self.num_cols + x
+				if self.balls[y][x].text == False:
+					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+		
+
+	# test2 color animation
+	def test2(self,wait_ms=10):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
