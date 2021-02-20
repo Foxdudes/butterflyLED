@@ -130,9 +130,9 @@ function setCustomTextColor(color){
 
 function setBGGreen(){
 	var xhttp = new XMLHttpRequest();
-	var red = 0;
-	var green = 255;
-	var blue = 0;
+	var red = 52;
+	var green = 235;
+	var blue = 161;
 	xhttp.open("POST", "/api/bgcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
@@ -142,9 +142,9 @@ function setBGGreen(){
 
 function setBGRed(){
 	var xhttp = new XMLHttpRequest();
-	var red = 255;
-	var green = 0;
-	var blue = 0;
+	var red = 52;
+	var green = 192;
+	var blue = 235;
 	xhttp.open("POST", "/api/bgcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
