@@ -52,6 +52,11 @@ form > * {
 	background-color: yellow;
 }
 
+.btn-mint {
+	background-color: #34eba1;
+	color: mint;
+}
+
 .btn-blue {
 	background-color: #0000ff;
 }
