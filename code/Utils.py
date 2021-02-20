@@ -64,11 +64,15 @@ colorListColor = [
 	Color(200,255,0),	# Optic Yellow
 	Color(50,0,255),	# Purple
 	Color(255,125,0),	# Orange
-	Color(255,0,50)		# Hot Pink
+	Color(255,0,50),	# Hot Pink
+	Color(52,192,235),	# Lblue
+	Color(52,192,235)	# Mint
 ]
 
 colorListRGB = [
 	[255,0,0],		# Red
+	[52,192,235],		# Lblue
+	[52,235,161],		# Mint
 	[255,255,0],	# Yellow
 	[255,0,255],	# Pink
 	[0,255,255],	# Teal
