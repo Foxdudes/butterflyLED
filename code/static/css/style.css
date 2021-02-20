@@ -54,12 +54,17 @@ form > * {
 
 .btn-mint {
 	background-color: #34eba1;
-	color: mint;
+	color: white;
+}
+
+.btn-gray {
+	color: #3b3b3b;
+	color: white;
 }
 
 .btn-lblue {
 	background-color: #34c0eb;
-	color: lblue;
+	color: white;
 }
 
 .btn-blue {
