@@ -14,35 +14,28 @@ from Utils import *
 class PingPongBoard:
 	def __init__(self):
 		self.num_balls = NUM_BALLS		# Needed for changing board type
-		self.num_rows = NUM_ROWS		# Needed for changing board type
-		self.num_cols = NUM_COLS		# Needed for changing board type
+		self.num_pos = NUM_POS		# Needed for changing board type
+		
 
 		self.animationFrame = 0				# Used for animations, start at 0
 		self.animationEnd = 1				# Default animation end frame. This is always changed
 		self.animationStartTime = [0,0]		# Used for animations and when to move the string
 		self.animationTimeElapsed = [0,0]	# Used for animations and when to move the string
 		self.breathColor = None				# Necessary for the breathing animation
-		self.twinkleStartTime = 0			# Used for timing when to initate a twinkle
-		self.twinkleTimeElapsed = 0			# Used for timing when to initate a twinkle
-		self.twinkleWaitTime = 0
-
-		self.fontChanged = False				# Store whether or not the font has changed
-		self.textOriginMoved = [False, False]	# Store whether or not the origin of the display string has changed
+		
 		self.displayString = ['', '']			# This is the string that will be ultimately displayed on screen
 		self.displayStringPrev = ['', '']		# This is what the display string was during the previous loop
 		self.displayStringLength = [0, 0]		# This is calculated and used to determine when we have cycled through an entire string during animations
-
-		self.weatherResponse = None		# This stores the reponse from the OpenWeather API
 
 		self.minsPrev = None			# Used to calculate when a minute has elapsed. This is useful to only update the weather once a minute TODO Change this
 
 		# Load settings that are saved to files 
 		self.loadSettings()
 
-		# Set up the ball objects
+		# Set up the ball objects // NIET ZEKER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		self.balls = []
-		for i in range(self.num_rows):
-			self.balls.append([0] * self.num_cols)
+		for i in range(self.num_pos):
+			self.balls.append([0]) 
 
 		# Initialize the ball objects
 		self.setupBalls()
@@ -53,20 +46,19 @@ class PingPongBoard:
 
 	# Sets up a ball object for every single ball on the board. The ball object definition can be found in Utils
 	def setupBalls(self):
-		for y in range(self.num_rows):
-			for x in range(self.num_cols):
-				self.balls[y][x] = Ball([y,x],self.boardType)    #passes [row,col], and the type of board which is used for the ledAdresses
+		for y in range(self.num_pos):
+				self.balls[y] = Ball([y])    #passes [row,col], and the type of board which is used for the ledAdresses
 
 	# Actually lights a specic ball (LED) with the color provided to the function. This will check to see if the color is different than the one already set for the ball first. If it is the same then it will not rewrite.
-	def writeBallColor(self,col,row,color):
+	def writeBallColor(self,pos,color):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
-		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
+		if pos < 0 or pos >= self.num_pos:
 			return
 
 		# If the color is different than what the buffer has stored, write it and show it
-		if self.balls[row][col].color != color:
-			self.strip.setPixelColor((self.balls[row][col].ledNum)*PIXEL_RATIO,color)
-			self.balls[row][col].color = color
+		if self.balls[pos].color != color:
+			self.strip.setPixelColor((self.balls[pos].ledNum)*PIXEL_RATIO,color)
+			self.balls[pos].color = color
 
 	# Changes the text state of a specific ball. This does NOT actually change the color. Merely whether or not the ball is used to display text. Will not rewrite state if the same.
 	def writeBallTextState(self,col,row,text):
