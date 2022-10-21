@@ -61,17 +61,20 @@ class PingPongBoard:
 			self.balls[pos].color = color
 
 	# Changes the text state of a specific ball. This does NOT actually change the color. Merely whether or not the ball is used to display text. Will not rewrite state if the same.
-	def writeBallTextState(self,col,row,text):
+	def writeBallState(self,pos,wings,accent):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
-		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
+		if pos < 0 or pos >= self.num_cols:
 			return
 
 		# If the text state is different than what the buffer has stored, change it
-		if self.balls[row][col].text != text:
-			self.balls[row][col].text = text
+		if self.balls[pos].wings != wings:
+			self.balls[pos].wings = wings
+		
+		if self.balls[pos].accent != accent:
+			self.balls[pos].accent = accent
 			
-	def writeBallAccentState(self,col,row,accent):
-		# Do not proceed if bad coordinates (could maybe replace with try/catch)
+	def 
+	t proceed if bad coordinates (could maybe replace with try/catch)
 		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
 			return
 
