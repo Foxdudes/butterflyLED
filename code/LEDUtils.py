@@ -77,6 +77,15 @@ class PingPongBoard:
 		# If the text state is different than what the buffer has stored, change it
 		if self.balls[row][col].text != text:
 			self.balls[row][col].text = text
+			
+	def writeBallAccentState(self,col,row,accent):
+		# Do not proceed if bad coordinates (could maybe replace with try/catch)
+		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
+			return
+
+		# If the text state is different than what the buffer has stored, change it
+		if self.balls[row][col].accent != accent:
+			self.balls[row][col].accent = accent
 
 	# Takes a single character provided and writes it to a location on the board.
 	def writeChar(self,col,row,char,textBool=True):
