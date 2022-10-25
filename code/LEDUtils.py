@@ -477,7 +477,8 @@ class PingPongBoard:
 		# Create a settings dictionary
 		settings = {
 			'animationSpeed' : self.animationSpeed,		# Balls/s for animations. Needs to be a float (.0). Static default
-			'textColor' : self.textColor,
+			'wingsColor' : self.wingsColor,
+			'accentColor' : self.accentColor,
 			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
 			'customText' : self.customText,
@@ -511,7 +512,8 @@ class PingPongBoard:
 
 		# Set variables from the settings 
 		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
-		self.textColor = settings['textColor']
+		self.wingsColor = settings['wingsColor']
+		self.accentColor = settings['accentColor']
 		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
 		self.customText = settings['customText']
