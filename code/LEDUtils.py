@@ -63,7 +63,7 @@ class PingPongBoard:
 	# Changes the text state of a specific ball. This does NOT actually change the color. Merely whether or not the ball is used to display text. Will not rewrite state if the same.
 	def writeBallState(self,pos,wings,accent):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
-		if pos < 0 or pos >= self.num_cols:
+		if pos < 0 or pos >= self.num_pos:
 			return
 
 		# If the text state is different than what the buffer has stored, change it
