@@ -56,8 +56,8 @@ colorListRGB = [
 	[255,0,50]		# Hot Pink
 ]
 class Ball:
-	def __init__(self, location):   #location is a list of two variables, [row, col]
-		self.location = location    #[row,col]
+	def __init__(self, pos):   #location is a list of two variables, [row, col]
+		self.pos = pos    #[row,col]
 
 		self.ledNum = ledAddresses[self.location[0]]   #[pos]	
       
