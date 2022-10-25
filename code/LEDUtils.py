@@ -91,27 +91,24 @@ class PingPongBoard:
 		# Fill the full screen
 		if fullwipe:
 			for y in range(self.num_rows):
-				self.writeBallTextState(x,y,False)
-				self.writeBallColor(x,y,color)
+				self.writeBallState(y,False,False)
+				self.writeBallColor(y,color)
 		# Fill only the text
 		elif wingsOnly:
 			for y in range(self.num_rows):
-				for x in range(self.num_cols):
-					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,color)
+				if self.balls[y].wings == True:
+					self.writeBallColor(y,color)
 		
 		elif accentOnly:
 			for y in range(self.num_rows):
-				for x in range(self.num_cols):
-					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,color)
+				if self.balls[y].accent == True:
+					self.writeBallColor(y,color)
 						
 		# Fill only the non-text
 		else:
 			for y in range(self.num_rows):
-				for x in range(self.num_cols):
-					if self.balls[y][x].text == False:
-						self.writeBallColor(x,y,color)
+				if (self.balls[y].wings == False) and (self.balls[y].accent == False):
+					self.writeBallColor(y,color)
 		self.strip.show()
 
 	# The core function that updates both the background color and text colors
@@ -123,76 +120,65 @@ class PingPongBoard:
 		[0] == "animation":
 			if self.bgColor[1] == "rainbow":
 				self.rainbow()
-			elif self.bgColor[1] == "rainbow2":
-				self.rainbow2()
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
 			elif self.bgColor[1] == "test":
 				self.test()
-			elif self.bgColor[1] == "ani1":
-				self.ani1()
-			elif self.bgColor[1] == "test2":
-				self.test2()
 			elif self.bgColor[1] == "breathing":
 				self.breathing(False)
-			elif self.bgColor[1] == "twinkle":
-				self.twinkle()
 		elif self.bgColor[0] == "solid" and self.bgDisplayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
 		self.bgDisplayChanged = False
 
-		# Color the Text
+		# Color the Wings
 		# Check to see if we have a text color animation
-		if self.textColor[0] == "animation":
-			if self.textColor[1] == "rainbow":
-				self.rainbowText()
-			elif self.textColor[1] == "rainbowCycle":
-				self.rainbowCycleText()
-			elif self.textColor[1] == "testText":
-				self.testText()
-			elif self.textColor[1] == "breathing":
+		if self.wingsColor[0] == "animation":
+			if self.wingsColor[1] == "rainbow":
+				self.rainbowWings()
+			elif self.wingsColor[1] == "rainbowCycle":
+				self.rainbowCycleWings()
+			elif self.wingsColor[1] == "testText":
+				self.testWings()
+			elif self.wingsColor[1] == "breathing":
 				self.breathing(True)
 		# Else, check for solid notification
-		elif self.textColor[0] == 'solid' and self.textDisplayChanged:
+		elif self.wingsColor[0] == 'solid' and self.wingsDisplayChanged:
 			for y in range(self.num_rows):
-				for x in range(self.num_cols):
-					if self.balls[y][x].text == True:
-						if self.textColor[0] == 'animation':
-							return
-						else:
-							self.writeBallColor(x,y,self.textColor[1])
+				if self.balls[y].wings == True:
+					if self.textColor[0] == 'animation':
+						return
+					else:
+						self.writeBallColor(y,self.wingsColor[1])
 			self.strip.show()
-
 		# Reset the display changed boolean now that it has been updated
-		self.textDisplayChanged = False
-
-	# Used to move the string during an animation.
-	def updateTextAnimation(self, lineNum):
-		# If start time has not been defined, do so
-		if self.animationStartTime[lineNum] == 0:
-			self.animationStartTime[lineNum] = time.time()
+		self.accentDisplayChanged = False
 		
-		nowTime = time.time()
+		# Color the Text
+		# Check to see if we have a text color animation
+		if self.accentColor[0] == "animation":
+			if self.accentColor[1] == "rainbow":
+				self.rainbowAccent()
+			elif self.accentColor[1] == "rainbowCycle":
+				self.rainbowCycleAccent()
+			elif self.accentColor[1] == "testText":
+				self.testAccent()
+			elif self.accentColor[1] == "breathing":
+				self.breathing(True)
+		# Else, check for solid notification
+		elif self.accentColor[0] == 'solid' and self.accentDisplayChanged:
+			for y in range(self.num_rows):
+				if self.balls[y].accent == True:
+					if self.accentColor[0] == 'animation':
+						return
+					else:
+						self.writeBallColor(y,self.accentColor[1])
+			self.strip.show()
+		
+		# Reset the display changed boolean now that it has been updated
+		self.accentDisplayChanged = False
 
-		# Determine the time elapsed since the start time
-		self.animationTimeElapsed[lineNum]= nowTime - self.animationStartTime[lineNum]
-
-		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.animationTimeElapsed[lineNum] >= 1/self.animationSpeed[lineNum] and self.animationSpeed[lineNum] != 0:
-			#Indicate the display has changed
-			self.textOriginMoved[lineNum] = True
-
-			# Move the text one space to the left
-			self.textOrigin[lineNum][0] -= 1
-
-			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[lineNum][0] < -1 * self.displayStringLength[lineNum]:
-				self.textOrigin[lineNum][0] = 23
-
-			# Set the start time to this time now
-			self.animationStartTime[lineNum] = nowTime
-
+	
 # COLOR ANIMATIONS ---------------------------------------------------------------------
 	# Used in rainbow and rainbowCycle to determine the color during the cycle. Makes for nice smooth transitions
 	def wheel(self,pos):
@@ -215,23 +201,32 @@ class PingPongBoard:
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = x*self.num_rows + y
-				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == False and self.balls[y].accent == False:
+				self.writeBallColor(y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 		
-	def rainbowText(self,wait_ms=18):
+	def rainbowWings(self,wait_ms=18):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = x*self.num_rows + y
-				if self.balls[y][x].text == True:
-					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == True and self.balls[y].accent == False:
+				self.writeBallColor(y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+		
+	def rainbowAccent(self,wait_ms=18):
+		# Draw rainbow that fades across all pixels at once.
+		j = self.updateFrame((self.led_count+self.led_count))
+
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == False and self.balls[y].accent == True:
+				self.writeBallColor(y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 		
@@ -240,114 +235,74 @@ class PingPongBoard:
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = x*self.num_rows + y
-				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel2(((i*PIXEL_RATIO)+j) & 150))
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == False and self.balls[y].accent == False:
+				self.writeBallColor(y,self.wheel2(((i*PIXEL_RATIO)+j) & 150))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 		
 	# testtext color animation
-	def testText(self,wait_ms=1):
+	def testWings(self,wait_ms=1):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = x*self.num_rows + y
-				if self.balls[y][x].text == True:
-					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == True and self.balls[y].accent == False:
+				self.writeBallColor(y,self.wheel2(((i*PIXEL_RATIO)+j) & 150))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 		
-	# ani1 color animation
-	def ani1(self,wait_ms=200):
+	def testAccent(self,wait_ms=1):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame((self.led_count+self.led_count))
 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,Color(169,34,69))
-					self.writeBallColor(2,1,Color(255,0,0))
-					self.writeBallColor(3,1,Color(255,0,0))
-					self.writeBallColor(3,0,Color(255,0,0))
-					self.writeBallColor(4,6,Color(255,0,0))
-					self.writeBallColor(5,6,Color(255,0,0))
-					self.writeBallColor(5,5,Color(255,0,0))
-					self.writeBallColor(10,1,Color(255,0,0))
-					self.writeBallColor(11,1,Color(255,0,0))
-					self.writeBallColor(11,0,Color(255,0,0))
-					self.writeBallColor(12,6,Color(255,0,0))
-					self.writeBallColor(13,6,Color(255,0,0))
-					self.writeBallColor(13,5,Color(255,0,0))
-					self.writeBallColor(16,1,Color(255,0,0))
-					self.writeBallColor(17,1,Color(255,0,0))
-					self.writeBallColor(17,0,Color(255,0,0))
-					self.writeBallColor(18,3,Color(255,0,0))
-					self.writeBallColor(19,3,Color(255,0,0))
-					self.writeBallColor(19,2,Color(255,0,0))
-				else:
-					self.writeBallColor(19,2,Color(255,0,0))
-		self.strip.show()
-		time.sleep(wait_ms/1000.0)
-	
-	# rainbow2 color animation
-	def rainbow2(self,wait_ms=10):
-		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame((self.led_count+self.led_count))
-
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = y*self.num_cols + x
-				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == False and self.balls[y].accent == True:
+				self.writeBallColor(y,self.wheel2(((i*PIXEL_RATIO)+j) & 150))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 		
-
-	# test2 color animation
-	def test2(self,wait_ms=10):
-		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame((self.led_count+self.led_count))
-
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = y*self.num_cols + x
-				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
-		self.strip.show()
-		time.sleep(wait_ms/1000.0)
 		
 	# Rainbow cycle makes all of the BG balls the same color and changes the color over time
 	def rainbowCycle(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame((self.led_count+self.led_count))
 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = x*self.num_rows + y
-				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.num_balls*PIXEL_RATIO))+j) & 255))
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == False and self.balls[y].accent == False :
+				self.writeBallColor(y,self.wheel((((i*PIXEL_RATIO)/(self.num_balls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
 		# Rainbow cycle makes all of the text the same color and changes the color over time
-	def rainbowCycleText(self,wait_ms=20):
+	def rainbowCycleWings(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame((self.led_count+self.led_count))
 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				i = x*self.num_rows + y
-				if self.balls[y][x].text == True:
-					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.num_balls*PIXEL_RATIO))+j) & 255))
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == True and self.balls[y].accent == False :
+				self.writeBallColor(y,self.wheel((((i*PIXEL_RATIO)/(self.num_balls*PIXEL_RATIO))+j) & 255))
+		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+		
+	def rainbowCycleAccent(self,wait_ms=20):
+		# Draw rainbow that uniformly distributes itself across all pixels.
+		j = self.updateFrame((self.led_count+self.led_count))
+
+		for y in range(self.num_pos):
+			i = self.num_pos + y
+			if self.balls[y].wings == False and self.balls[y].accent == True :
+				self.writeBallColor(y,self.wheel((((i*PIXEL_RATIO)/(self.num_balls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
 	# Breathing color animation. Uses the random color list in Utils
-	def breathing(self,text=False,wait_ms=20):
+	def breathing(self,wings=True,accent=False,wait_ms=20):
 		# Cycle in and out of random colors from colorList
 		j = self.updateFrame(100)
 
@@ -362,54 +317,8 @@ class PingPongBoard:
 		self.breathColorModified = [int(i*brightnessFactor) for i in self.breathColor]
 
 		# Color the balls
-		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]),False,text)
+		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]),False,wings)
 		time.sleep(wait_ms/1000.0)	# wait time
-
-	def twinkle(self):
-		# If start time has not been defined, do so
-		if self.twinkleStartTime == 0:
-			self.twinkleStartTime = time.time()
-
-		# If a twinkle wait time has not been generated then do so
-		if self.twinkleWaitTime == 0:
-			self.twinkleWaitTime = random.random() * 3	# Pick a random number between 0 and 3 and set the wait time as that
-		
-		nowTime = time.time()
-
-		# Determine the time elapsed since the start time
-		self.twinkleTimeElapsed = nowTime - self.twinkleStartTime
-
-		# Update the twinkles 
-		for x in range(self.num_cols):
-			for y in range(self.num_rows):
-				# If the ball is a current twinkle ball then update the frame and color
-				if self.balls[y][x].twinkle:
-					colorElement = int(self.balls[y][x].brightnessFactor() * 255)
-
-					# print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
-					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
-
-					self.balls[y][x].twinkleStep()
-				elif self.balls[y][x].text == False:
-					self.writeBallColor(x,y,Color(20,0,110))
-
-		# If the time elapsed is greater than the twinkleWaitTime then initiate a twinkle
-		if self.twinkleTimeElapsed >= self.twinkleWaitTime:
-			row = int(random.randint(0,self.num_rows-1))
-			col = int(random.randint(0,self.num_cols-1))
-
-			# If the ball is text then get out of here. Do one more loop to determine a new ball
-			if self.balls[row][col].text or self.balls[row][col].twinkle:
-				return
-
-			self.balls[row][col].twinkle = True
-			self.balls[row][col].twinkleLength = random.randint(50,100)
-
-			# Set a new twinkle wait time and reset the time elapsed
-			self.twinkleStartTime = time.time()
-			self.twinkleWaitTime = random.random() * 2	# Pick a random number between 0 and 3 and set the wait time as that
-
-		self.strip.show()
 
 # CONTENT GENERATION --------------------------------------------------------------------
 
@@ -618,7 +527,8 @@ class PingPongBoard:
 
 		# Since we have loaded new settings, assume the displays have changed
 		self.bgDisplayChanged = True
-		self.textDisplayChanged = True
+		self.WingsDisplayChanged = True
+		self.AccentDisplayChanged = True
 		self.updateWeather = True
 
 		# Establish the text origin list with spaces for 2 lines
