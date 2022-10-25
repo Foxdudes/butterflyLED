@@ -90,23 +90,23 @@ class PingPongBoard:
 	def (self,color,fullwipe=False,wingsOnly=False,accentOnly=False):
 		# Fill the full screen
 		if fullwipe:
-			for y in range(self.num_rows):
+			for y in range(self.num_pos):
 				self.writeBallState(y,False,False)
 				self.writeBallColor(y,color)
 		# Fill only the text
 		elif wingsOnly:
-			for y in range(self.num_rows):
+			for y in range(self.num_pos):
 				if self.balls[y].wings == True:
 					self.writeBallColor(y,color)
 		
 		elif accentOnly:
-			for y in range(self.num_rows):
+			for y in range(self.num_pos):
 				if self.balls[y].accent == True:
 					self.writeBallColor(y,color)
 						
 		# Fill only the non-text
 		else:
-			for y in range(self.num_rows):
+			for y in range(self.num_pos):
 				if (self.balls[y].wings == False) and (self.balls[y].accent == False):
 					self.writeBallColor(y,color)
 		self.strip.show()
@@ -144,7 +144,7 @@ class PingPongBoard:
 				self.breathing(True)
 		# Else, check for solid notification
 		elif self.wingsColor[0] == 'solid' and self.wingsDisplayChanged:
-			for y in range(self.num_rows):
+			for y in range(self.num_pos):
 				if self.balls[y].wings == True:
 					if self.textColor[0] == 'animation':
 						return
@@ -167,7 +167,7 @@ class PingPongBoard:
 				self.breathing(True)
 		# Else, check for solid notification
 		elif self.accentColor[0] == 'solid' and self.accentDisplayChanged:
-			for y in range(self.num_rows):
+			for y in range(self.num_pos):
 				if self.balls[y].accent == True:
 					if self.accentColor[0] == 'animation':
 						return
