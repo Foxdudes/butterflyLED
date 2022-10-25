@@ -47,7 +47,7 @@ class PingPongBoard:
 	# Sets up a ball object for every single ball on the board. The ball object definition can be found in Utils
 	def setupBalls(self):
 		for y in range(self.num_pos):
-				self.balls[y] = Ball([y])    #passes [row,col], and the type of board which is used for the ledAdresses
+			self.balls[y] = Ball([y])    #passes [row,col], and the type of board which is used for the ledAdresses
 
 	# Actually lights a specic ball (LED) with the color provided to the function. This will check to see if the color is different than the one already set for the ball first. If it is the same then it will not rewrite.
 	def writeBallColor(self,pos,color):
@@ -72,67 +72,6 @@ class PingPongBoard:
 		
 		if self.balls[pos].accent != accent:
 			self.balls[pos].accent = accent
-			
-	def 
-	t proceed if bad coordinates (could maybe replace with try/catch)
-		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
-			return
-
-		# If the text state is different than what the buffer has stored, change it
-		if self.balls[row][col].accent != accent:
-			self.balls[row][col].accent = accent
-
-	# Takes a single character provided and writes it to a location on the board.
-	def writeChar(self,col,row,char,textBool=True):
-		# This makes sure that all text is written in the slanted font despite any other font being set
-		if char.isdigit() == False and char != ':' and char != ';':
-			font = slanted
-		else:
-			font = self.font
-
-		# Determine the distance to the next character based on the current character and the spacing setting
-		if char.isspace():
-			distanceToNext = 4
-		else:
-			distanceToNext = len(font[ord(char)][0]) + self.textSpacing
-
-		# Do not write characters outside of the display area
-		if col <= -4 or col > self.num_cols:
-			return distanceToNext
-		if row < -5 or row >= self.num_rows:
-			return distanceToNext
-
-		#Step through the rows and columns of the character and write each pixel/ball/LED
-		for y in range(len(font[ord(char)])):
-			for x in range(len(font[ord(char)][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-				if font[ord(char)][-(y+1)][x]:
-					self.writeBallTextState(col+x,row+y,textBool)
-				else:
-					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
-		self.strip.show()
-
-		# Returns the distance to the next character. Used for display string length calcs and to find the location of the next character.
-		return distanceToNext
-
-	# Writes the display string if some conditions are met. 
-	def updateDisplayString(self):
-		# Iterate across the line numbers
-		for i in range(self.lineCount):
-			#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
-			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved[i] or self.fontChanged:
-				x = self.textOrigin[i][0] 
-				y = self.textOrigin[i][1]
-				for j in range(len(self.displayString[i])):
-					distanceToNext = self.writeChar(x,y,self.displayString[i][j])
-					x += distanceToNext
-
-				# After we write a new string, reset/set booleans and set the prev variable to the current string
-				self.textOriginMoved[i] = False							# We just addressed this change, so change it back to false
-				self.fontChanged = False								# We just addressed this change, so change it back to false
-				self.textDisplayChanged = True							# We have written a new string, so the display has changed
-				self.bgDisplayChanged = True							# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
-				self.displayStringPrev[i] = self.displayString[i]		# Set the displayStringPrev[i] to the current string
-				self.displayStringLength[i] = x - self.textOrigin[i][0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
 	def updateFrame(self, animationEnd):
@@ -143,25 +82,30 @@ class PingPongBoard:
 		return self.animationFrame
 
 	# This sets every ball's text state to False on the board
-	def textStateWipe(self):
-		for y in range(self.num_rows):
-			for x in range(self.num_cols):
-				self.writeBallTextState(x,y,False)
+	def StateWipe(self):
+		for y in range(self.num_pos):
+			self.writeBallState(y,False,False)
 
 	# Fills sections/the whole board with the provided color. This function can fill: the whole board, only non-text balls, only text balls
-	def (self,color,fullwipe=False,textOnly=False):
+	def (self,color,fullwipe=False,wingsOnly=False,accentOnly=False):
 		# Fill the full screen
 		if fullwipe:
 			for y in range(self.num_rows):
-				for x in range(self.num_cols):
-					self.writeBallTextState(x,y,False)
-					self.writeBallColor(x,y,color)
+				self.writeBallTextState(x,y,False)
+				self.writeBallColor(x,y,color)
 		# Fill only the text
-		elif textOnly:
+		elif wingsOnly:
 			for y in range(self.num_rows):
 				for x in range(self.num_cols):
 					if self.balls[y][x].text == True:
 						self.writeBallColor(x,y,color)
+		
+		elif accentOnly:
+			for y in range(self.num_rows):
+				for x in range(self.num_cols):
+					if self.balls[y][x].text == True:
+						self.writeBallColor(x,y,color)
+						
 		# Fill only the non-text
 		else:
 			for y in range(self.num_rows):
