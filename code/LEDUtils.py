@@ -146,7 +146,7 @@ class PingPongBoard:
 		elif self.wingsColor[0] == 'solid' and self.wingsDisplayChanged:
 			for y in range(self.num_pos):
 				if self.balls[y].wings == True:
-					if self.textColor[0] == 'animation':
+					if self.wingsColor[0] == 'animation':
 						return
 					else:
 						self.writeBallColor(y,self.wingsColor[1])
