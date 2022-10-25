@@ -31,20 +31,36 @@ def setBGColor():
 	return ""
 
 # Flask Text Color API
-@app.route("/api/textcolor", methods=['POST'])
-def setTextColor():
+@app.route("/api/wingscolor", methods=['POST'])
+def setWingsColor():
 	# Read the values from the POST
 	program = request.form['color']
 	red = int(request.form['red'])
 	green = int(request.form['green'])
 	blue = int(request.form['blue'])
 	
-	PPB.textDisplayChanged = True
+	PPB.wingsDisplayChanged = True
 	# Change the bg color accordingly
 	if program == "solid":
-		PPB.textColor = ["solid", Color(red,green,blue)]
+		PPB.wingsColor = ["solid", Color(red,green,blue)]
 	else:
-		PPB.textColor = ["animation", program]
+		PPB.wingsColor = ["animation", program]
+	return ""
+
+@app.route("/api/accentcolor", methods=['POST'])
+def setAccentColor():
+	# Read the values from the POST
+	program = request.form['color']
+	red = int(request.form['red'])
+	green = int(request.form['green'])
+	blue = int(request.form['blue'])
+	
+	PPB.accentDisplayChanged = True
+	# Change the bg color accordingly
+	if program == "solid":
+		PPB.accentColor = ["solid", Color(red,green,blue)]
+	else:
+		PPB.accentColor = ["animation", program]
 	return ""
 
 # Flask Font API
@@ -65,34 +81,6 @@ def setFont():
 
 	return ""
 
-# Flask Text Animation API
-@app.route("/api/textanimation", methods=['POST'])
-def setTextAnimation():
-	# Read the values from the POST
-	animation = str(request.form['animation'])
-	lineNum = int(request.form['lineNum'])
-
-	if animation == "static":
-		if PPB.boardType == 'normal':
-			PPB.textOrigin[0] = [1,1]
-		elif PPB.boardType == 'xl':
-			if PPB.lineCount == 1:
-				PPB.textOrigin[0] = [2,4]
-			elif PPB.lineCount == 2:
-				if lineNum == 0:
-					PPB.textOrigin[lineNum] = [4,1]
-				elif lineNum == 1:
-					PPB.textOrigin[lineNum] = [1,7]
-		PPB.animationSpeed[lineNum] = 0
-	if animation == "scrolling":
-		speed = float(request.form['speed'])
-		PPB.animationSpeed[lineNum] = speed
-
-	# Reset the text on the screen
-	PPB.textStateWipe()
-	PPB.textOriginMoved = [True, True]
-	PPB.updateDisplayString()
-	return ""
 
 # Flask Select Content API
 @app.route("/api/setcontent", methods=['POST'])
@@ -110,7 +98,8 @@ def setContent():
 		PPB.content.remove(contentChunk)
 
 	print PPB.content
-	PPB.textStateWipe()
+	PPB.wingsStateWipe()
+	PPB.accentStateWipe()
 	return ""
 
 # Flask Set Custom Text API
