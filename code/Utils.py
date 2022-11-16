@@ -6,7 +6,7 @@ from neopixel import *
 # CONGIFURE YOUR BOARD HERE!
 # LED strip configuration:
 NUM_BALLS		= 41				# Number of balls on your board #CHANGED FOR XL
-NUM_POS		= 7				# position of the ball
+NUM_POS		= 41				# position of the ball
 PIXEL_DENSITY	= 30				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
 
 PIXEL_RATIO		= PIXEL_DENSITY/30	# Needed for the odd strips like mine

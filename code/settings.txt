@@ -1,1 +1,1 @@
-{"boardType": "normal", "brightness": 125, "content": ["time 0"], "customText": "", "animationSpeed": [0,0], "wingsColor": ["solid", 2752724], "accentColor": ["solid", 11175137], "lineCount": 1}
+{"boardType": "normal", "brightness": 125, "content": ["time 0"], "customText": "", "animationSpeed": [0,0],"bgColor": ["solid", 2752724], "wingsColor": ["solid", 2752724], "accentColor": ["solid", 11175137], "lineCount": 1}
