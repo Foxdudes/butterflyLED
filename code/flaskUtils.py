@@ -97,29 +97,9 @@ def setContent():
 	elif checked == 'false' and (contentChunk in PPB.content) == True:
 		PPB.content.remove(contentChunk)
 
-	print PPB.content
+	print (PPB.content)
 	PPB.wingsStateWipe()
 	PPB.accentStateWipe()
-	return ""
-
-# Flask Set Custom Text API
-@app.route("/api/setcustomtext", methods=['POST'])
-def setCustomText():
-	# Read the values from the POST
-	text = str(request.form['text'])
-
-	PPB.customText = text
-	return ""
-
-# Flask Set Custom Text API
-@app.route("/api/weather", methods=['POST'])
-def setWeather():
-	# Read the values from the POST
-	PPB.tempUnits = str(request.form['unit'])
-	PPB.weatherZipLocation = str(request.form['zip'])
-	PPB.weatherCityLocation = str(request.form['city'])
-
-	PPB.updateWeather = True
 	return ""
 
 # Flask Settings API
@@ -145,28 +125,18 @@ def setBrightness():
 
 	return ""
 
-# Flask Set Brightness API
-@app.route("/api/timeformat", methods=['POST'])
-def setTimeFormat():
-	# Read the values from the POST
-	timeFormat = str(request.form['timeFormat'])
-
-	PPB.timeFormat = timeFormat
-
-	return ""
-
 # Flask Web PageSettings API
 @app.route("/api/webpagesettings", methods=['GET','POST'])
 def updateWebPageSettings():
 	if request.method == 'GET':
 		# Get the web page settings from webpagesettings.txt
-		with open('/home/pi/ledppbc/code/webpagesettings.txt', 'r') as filehandle:
+		with open('/home/pi/butterflyLED/code/webpagesettings.txt', 'r') as filehandle:
 			return filehandle.read()
 	
 	elif request.method == 'POST':
 		settings = str(request.form['settings'])
 		# Write the settings to webpagesettings.txt
-		with open('/home/pi/ledppbc/code/webpagesettings.txt', 'w') as filehandle:
+		with open('/home/pi/butterflyLED/code/webpagesettings.txt', 'w') as filehandle:
 			filehandle.write(settings)
 		return ""
 
@@ -182,27 +152,5 @@ def setBoardType():
 	# Change the board type and save the settings
 	PPB.boardType = boardType
 	PPB.dumpSettings()
-
-	return ""
-
-# XL Settings API
-@app.route("/api/xlsettings", methods=['POST'])
-def setXLSettings():
-	# Read the values from the POST
-	lineCount = int(request.form['lineCount'])
-
-	PPB.lineCount = lineCount
-
-	if PPB.boardType == 'xl':
-		if PPB.lineCount == 1:
-			PPB.textOrigin[0] = [2,4]
-		elif PPB.lineCount == 2:
-			PPB.textOrigin[0] = [4,1]
-			PPB.textOrigin[1] = [1,7]
-	else: 
-		print "Board is not set to XL"
-
-	# Perform a reset of the board to eliminate the ghost text balls
-	PPB.colorFill(Color(0,0,0), True)
 
 	return ""
